@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+argparse
+configparser
+pysocks
+requests

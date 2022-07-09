@@ -1,0 +1,45 @@
+---
+version: "3.9"
+
+services:
+  tor:
+    image: "bushidomarket/tor:${BM_VERSION_TAG}"
+    container_name: tor-proxy
+    build: 
+      context: .
+      dockerfile: "./etc/tor/Dockerfile"
+    environment:
+      TOR_PROXY_ACCEPT: ${TOR_PROXY_ACCEPT}
+    volumes:
+      - tor:/tor/
+    ports:
+      - "9050"
+    restart: unless-stopped
+    networks:
+      tor-net:
+        ipv4_address: ${TOR_STATIC_IP}
+  web_server:
+    image: "bushidomarket/webserver:${BM_VERSION_TAG}"
+    container_name: nokyc-api
+    build:
+      context: .
+      dockerfile: 'etc/fastapi/Dockerfile'
+    command: "/start-reload.sh"
+    volumes:
+      - ./src/app:/app/
+    ports:
+      - "80:80"
+    networks:
+      tor-net:
+        ipv4_address: ${APP_STATIC_IP}
+volumes:
+  tor:
+  nokyc-app:
+networks:
+  tor-net:
+    name: bushido-market-net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${NETWORK_SUBNET}
