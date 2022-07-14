@@ -1,0 +1,4 @@
+TODOs (✔/☐)
+☐ Add ENTRYPOINT and HEALTHYCHECK to fastapi container
+☐ Create a `crontab` to renew circuit each day. We might need to open TOR control port for that
+

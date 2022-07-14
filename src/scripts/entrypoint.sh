@@ -283,4 +283,5 @@ tor --version
 echo ''
 
 ## Execute dockerfile CMD as nonroot alternate gosu
+## $@ expands the arguments passed from the caller. In that case, we get from dockerfile CMD directive
 su-exec "${PUID}:${PGID}" "$@"

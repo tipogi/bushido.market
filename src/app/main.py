@@ -27,8 +27,8 @@ def read_root():
 
 
     try:
-        #f = session.get(robosatsTor + command)
-        f = session.get(api)
+        f = session.get(robosatsTor + command)
+        #f = session.get(api)
     except IOError:
         print("Please, make sure you are running TOR!")
         exit(1)
