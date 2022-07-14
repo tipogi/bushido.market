@@ -12,9 +12,9 @@ services:
       TOR_PROXY_ACCEPT: ${TOR_PROXY_ACCEPT}
     volumes:
       - tor:/tor/
-    ports:
-      - "9050"
     restart: unless-stopped
+    # We do not need to expose any port because all the request are going
+    # inside of the container network
     networks:
       tor-net:
         ipv4_address: ${TOR_STATIC_IP}
@@ -35,6 +35,9 @@ services:
 volumes:
   tor:
   nokyc-app:
+# Create a network to add the nokyc-api IP in the /tor/torrc file
+# We cannot add the container name because we get the following error
+# Malformed IP "tor-proxy" in address pattern; rejecting.
 networks:
   tor-net:
     name: bushido-market-net
