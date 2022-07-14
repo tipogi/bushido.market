@@ -28,7 +28,7 @@ services:
     volumes:
       - ./src/app:/app/
     ports:
-      - "80:80"
+      - "8080:80"
     networks:
       tor-net:
         ipv4_address: ${APP_STATIC_IP}

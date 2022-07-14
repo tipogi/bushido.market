@@ -4,7 +4,8 @@ Instead of making requests from the CLI, we have an API server to make queries a
 - [Docker Tor](https://github.com/BarneyBuffet/docker-tor): A docker image that runs a Tor service on an Alpine linux base image
 - [nokyc](https://github.com/j4imefoo/nokyc): A script that lists all current Bisq, HodlHodl, and Robosats offers in the terminal
 ## Containers Network
-Create docker network to set the communication between the containers. Allow to the **app container** to make request against the tor **proxy container** editing the default value of `TOR_PROXY_ACCEPT`. Docker proxy container does not expose its SOCKS port to outside, it is just accessible from inside of the docker network
+Create a docker network to set the communication between the containers. Even docker creates a default network in each docker-compose execution, in `torrc` file, we cannot use docker container name becase it breaks the naming pattern, it has to be an IP.
+Allow to the **app container** to make request against the tor **proxy container** editing the default value of `TOR_PROXY_ACCEPT`. Docker proxy container does not expose its SOCKS port to outside, it is just accessible from inside of the docker network.
 These variables would be the default ones but we can add also the following Tor flags. Once we add in the `.env` new variables, we have to add that flags in `environments` key in the `docker-compose.yml` file.
 ```yaml
 NETWORK_SUBNET=10.0.0.0/8
