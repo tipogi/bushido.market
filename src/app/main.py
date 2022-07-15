@@ -19,7 +19,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"root": "main"}
+    return {"root": "me"}
 
     
 
