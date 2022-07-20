@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-argparse
-configparser
+# It sends traffic through SOCKS and HTTP proxy servers.
+# If we do not install that one, we cannot proxy
 pysocks
 requests
