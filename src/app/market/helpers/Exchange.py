@@ -1,4 +1,4 @@
-from proxy.Tor import Tor
+from proxy.tor import Tor
 
 EXCHANGE_URL = 'http://wizpriceje6q5tdrxkyiazsgu7irquiqjy2dptezqhrtu7l2qelqktid.onion/getAllMarketPrices'
 

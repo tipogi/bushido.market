@@ -1,5 +1,5 @@
-from proxy.Tor import Tor
-from market.helpers.Filters import SELL, BUY, Filter, ONLINE, RECENTLY_ONLINE, OFFLINE
+from proxy.tor import Tor
+from market.helpers.filters import SELL, BUY, Filter, ONLINE, RECENTLY_ONLINE, OFFLINE
 
 # Check in the robosats github the url
 ROBOSATS_ONION = "http://robosats6tkf3eva7x2voqso3a5wcorsnw34jveyxfqi2fu7oyheasid.onion"

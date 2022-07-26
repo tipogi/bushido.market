@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from typing import Optional
 from pydantic import BaseModel
 
-from market.helpers.Filters import BUY
-from market.helpers.Exchange import Exchange
-from market.Bisq import Bisq
-from market.Hodlhodl import HodlHodl
-from market.Robosats import RoboSats
+from market.helpers.filters import BUY
+from market.helpers.exchange import Exchange
+from market.bisq import Bisq
+from market.hodlhodl import HodlHodl
+from market.robosats import RoboSats
 
 # Start the application
 app = FastAPI()

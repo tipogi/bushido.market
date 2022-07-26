@@ -1,6 +1,6 @@
 from operator import truediv
-from market.helpers.Filters import Filter, BUY
-from proxy.Tor import Tor
+from market.helpers.filters import Filter, BUY
+from proxy.tor import Tor
 
 HOLDHODL_API = "https://hodlhodl.com/api/v1/offers?"
 HOLDHODL_FILTER = "filters[side]={}&filters[include_global]=true&filters[currency_code]={}&filters[only_working_now]=true&sort[by]=price"

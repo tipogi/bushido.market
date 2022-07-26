@@ -1,5 +1,5 @@
-from market.helpers.Filters import Filter, ONLINE
-from proxy.Tor import Tor
+from market.helpers.filters import Filter, ONLINE
+from proxy.tor import Tor
 
 BISQ_CLEAR = "https://bisq.markets"
 BISQ_ONION = "http://bisqmktse2cabavbr2xjq7xw3h6g5ottemo5rolfcwt6aly6tp5fdryd.onion"
