@@ -1,7 +1,14 @@
-from proxy.tor import Tor
+from proxy.Tor import Tor
+from market.helpers.Filters import SELL, BUY, Filter, ONLINE, RECENTLY_ONLINE, OFFLINE
 
+# Check in the robosats github the url
 ROBOSATS_ONION = "http://robosats6tkf3eva7x2voqso3a5wcorsnw34jveyxfqi2fu7oyheasid.onion"
 ROBOSATS_FILTER = "/api/book/?currency={}&type={}"
+
+# Offer actual state
+ACTIVE = "Active"
+SEEN_RECENTLY = "Seen Recently"
+INACTIVE = "Inactive"
 
 currencies = {
   "1":"USD", 
@@ -71,49 +78,76 @@ currencies = {
 
 class RoboSats:
   # Get the API request query
-  def getQuery(fiat, direction):
+  def getQuery(fiat: str, direction: str):
     key_list = list(currencies.keys())
     val_list = list(currencies.values())
     index = val_list.index(fiat.upper())
     # In that case, currency is a integer not a currency symbol
     currency = key_list[index]
-
-    if (direction == "sell"):
-        typeoffer = 1
+    
+    # Get the buy offers
+    if (direction == SELL):
+      # In robosats the buy type offers are defined with the 0 number
+      typeoffer = 0
+    # Get the sell offers
+    elif (direction == BUY):
+      # The sell offers are defined with the 1 number
+      typeoffer = 1
     else:
-        typeoffer = 0
+      # Get all the offers
+      typeoffer = 2
 
     return ROBOSATS_FILTER.format(currency, typeoffer)
 
-  def market_offers(fiat, direction):
+  # Get the same status as HodlHodl
+  def get_maker_status(status: str):
+    if (status == ACTIVE):
+      return ONLINE
+    elif (status == SEEN_RECENTLY):
+      return RECENTLY_ONLINE
+    else:
+      return OFFLINE
+
+  def market_offers(fiat: str, direction: str, premium: float):
+    # Create request filter
     filter = RoboSats.getQuery(fiat, direction)
+    # Create the API request URL
     robosats_url = ROBOSATS_ONION + filter
+    # Make request to get offers
+    robosats_offers = Tor.proxy_request(robosats_url, 'ROBOSATS')
 
-    response = Tor.proxy_request(robosats_url, 'ROBOSATS')
-
+    # We will populate all offers filtering the fields that we want
     all_offers = []
+    
+    for robosats_offer in robosats_offers:
+      # Get some fields before add an offer
+      offer_premium = float(robosats_offer['premium'])
+      offer_type = Filter.get_offer_types(direction)
 
-    for robo_offer in response:
-      if (robo_offer == "not_found"):
-        break
-      offer = {}
-      offer['exchange'] = 'Robosats'
-      offer['price'] = int(float(robo_offer['price']))
-      offer['dif'] = float(robo_offer['premium'])
+      if (Filter.offer_premium_accepted(offer_type, offer_premium, premium)):
+        offer = {}
+        offer['exchange'] = 'Robosats'
 
-      if (robo_offer['amount'] is not None):
-        offer['min_amount'] = int(float(robo_offer['amount']))
-        offer['max_amount'] = int(float(robo_offer['amount']))
-      else:
-        offer['min_amount'] = int(float(robo_offer['min_amount']))
-        offer['max_amount'] = int(float(robo_offer['max_amount']))
-        offer['min_btc'] = offer['min_amount']/offer['price']
-        offer['max_btc'] = offer['max_amount']/offer['price']
-        offer['method'] = robo_offer['payment_method']
+        offer['price'] = int(float(robosats_offer['price']))
+        offer['dif'] = offer_premium
+
+        # Get the offer online status
+        offer['maker_status'] = RoboSats.get_maker_status(robosats_offer['maker_status'])
+
+        if (robosats_offer['amount'] is not None):
+          offer['min_amount'] = int(float(robosats_offer['amount']))
+          offer['max_amount'] = int(float(robosats_offer['amount']))
+        else:
+          offer['min_amount'] = int(float(robosats_offer['min_amount']))
+          offer['max_amount'] = int(float(robosats_offer['max_amount']))
+
+        offer['min_btc'] = offer['min_amount'] / offer['price']
+        offer['max_btc'] = offer['max_amount'] / offer['price']
+        offer['method'] = robosats_offer['payment_method']
+
+        # Add the offer in the offers array  
         all_offers.append(offer)
 
-      all_offers.sort(key=lambda item: item.get('price'))
-
-      return all_offers
+    return all_offers
 
   

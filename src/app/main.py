@@ -1,37 +1,49 @@
 from fastapi import FastAPI
+from typing import Optional
+from pydantic import BaseModel
 
-from market.exchange import Exchange
-from market.bisq import Bisq
-from market.hodlhodl import HodlHodl
-from market.robosats import RoboSats
+from market.helpers.Filters import BUY
+from market.helpers.Exchange import Exchange
+from market.Bisq import Bisq
+from market.Hodlhodl import HodlHodl
+from market.Robosats import RoboSats
 
+# Start the application
 app = FastAPI()
 
+# Define parameters default values
+class MarketOptions(BaseModel):
+    direction: Optional[str] = BUY
+    fiat: Optional[str] = 'eur'
+    premium: Optional[float] = 8
+
+@app.post("/market_offers")
+def market_offers(params: MarketOptions):
+    # The offers currency
+    fiat = params.fiat
+    # The user action. If the user wants to buy we have to show sell offers
+    # and viceversa. We will query to API to get offers types, not the user action
+    direction = params.direction
+    premium = params.premium
+
+    exch_price = Exchange.get_fiat_price(fiat)
+    bisq_offers = Bisq.market_offers(fiat, direction, premium, exch_price)
+    hodlhodl_offers = HodlHodl.market_offers(fiat, direction, premium, exch_price)
+    robosats_offers = RoboSats.market_offers(fiat, direction, premium)
+    # Join all the offers
+    allOffers = bisq_offers + hodlhodl_offers + robosats_offers
+    # and order by price depending the direction
+    if (direction == BUY):
+        allOffers.sort(key=lambda item: item.get('price'))
+    else:
+        allOffers.sort(key=lambda item: item.get('price'), reverse=True)
+
+    return { "offers": allOffers, "price": exch_price }
 
 # Ping temporal healthchecks from docker to see if the container is up
 @app.get("/healthcheck")
 def healthcheck():
     return 'healthy'
-
-@app.get("/market_offers")
-def market_offers():
-    fiat = "eur"
-    direction = "buy"
-
-    exch_price = Exchange.get_fiat_price(fiat)
-    
-    bisq_offers = Bisq.market_offers(fiat, direction, exch_price)
-    hodlhodl_offers = HodlHodl.market_offers(fiat, direction, exch_price)
-    robosats_offers = RoboSats.market_offers(fiat, direction)
-    # Join all the offers
-    allOffers = bisq_offers + hodlhodl_offers + robosats_offers
-    # and order by price depending the direction
-    if (direction =='sell'):
-        allOffers.sort(key=lambda item: item.get('price'))
-    else:
-        allOffers.sort(key=lambda item: item.get('price'), reverse=True)
-
-    return allOffers
 
 @app.get("/urls")
 def market():
