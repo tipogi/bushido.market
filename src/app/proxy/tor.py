@@ -1,6 +1,8 @@
 import requests
 import json
 
+REQUEST_TIMEOUT = 10.0
+
 class Tor:
   # Make a request throw the Tor Proxy
   def proxy_request(url: str, market_name: str):
@@ -12,7 +14,7 @@ class Tor:
           'https': 'socks5h://tor:9050'
       }
       # Make request
-      request = session.get(url, timeout=10.0)
+      request = session.get(url, timeout=REQUEST_TIMEOUT)
       response = request.json()
       # Finish request
       request.close()
