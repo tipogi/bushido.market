@@ -18,8 +18,9 @@ LITECOIN = 'Litecoin'
 ZELLE = 'Zelle'
 SKRILL = 'Skrill'
 F2F = 'F2F'
-CASH_BY_EMAIL = 'CASH_BY_EMAIL'
+CASH_BY_MAIL = 'CASH_BY_MAIL'
 PAYPAL = 'Paypal'
+PAYPAL_UP = 'PayPal'
 AMAZON_GIFT_CARD_IN_ONE = 'AMAZON_GIFT_CARD'
 # What is that? https://www.clearxchange.com/ -> Zelle icon
 CLEAR_X_CHANGE = 'CLEAR_X_CHANGE'
@@ -31,6 +32,7 @@ TRANSFERWISE_LOWER = 'TransferWise'
 WISE = 'Wise'
 SEPA = 'SEPA'
 SEPA_INSTANT = 'SEPA_INSTANT'
+ANY_NATIONAL_BANK = "Any national bank"
 REVOLUT = 'REVOLUT'
 REVOLUT_LOWERCASE = 'Revolut'
 BIZUM = 'BIZUM'
@@ -71,12 +73,6 @@ PAYMENT_STATIC = [
 
 class Payment:
 
-  def model_orders_payments_types():
-    for order in PAYMENT_STATIC:
-      paymentMethodsArray = Payment.__loopOrderPaymentsMethods(order["method"])
-      print (paymentMethodsArray)
-    return PAYMENT_STATIC
-
   def loopOrderPaymentsMethods(paymentMethods):
     # Convert payment methods string in an array to after loop
     icon, others, paymentMethodArray = [], [], paymentMethods.split()
@@ -107,8 +103,7 @@ class Payment:
         paymentType == ZELLE or 
         paymentType == SKRILL or 
         paymentType == F2F or 
-        paymentType == CASH_BY_EMAIL or 
-        paymentType == PAYPAL or
+        paymentType == CASH_BY_MAIL or 
         paymentType == AMAZON_GIFT_CARD_IN_ONE or 
         paymentType == CLEAR_X_CHANGE
     ):
@@ -123,6 +118,8 @@ class Payment:
       return REVOLUT_LOWERCASE
     elif paymentType == BIZUM or paymentType == BIZUM_LOWERCASE:
       return BIZUM
+    elif paymentType == PAYPAL or paymentType == PAYPAL_UP:
+      return PAYPAL
     elif paymentType == TETHER or paymentType == USDT:
       return TETHER
     elif paymentType == INSTANT:
@@ -138,9 +135,11 @@ class Payment:
       return PAYPAL
     elif paymentMethods == LN_NETWORK:
       return LN_ICON
-    elif paymentMethods == BINANCE_COIN:
-      return BNB_ICON
+    #elif paymentMethods == BINANCE_COIN:
+      #return BNB_ICON
     elif paymentMethods == IN_PERSON:
       return F2F
+    elif paymentMethods == ANY_NATIONAL_BANK:
+      return ANY_NATIONAL_BANK
     else:
       return None

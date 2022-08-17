@@ -61,4 +61,4 @@ def market():
 @app.get("/test")
 def me():
     orders = Payment.model_orders_payments_types()
-    return orders
+    return 'test'

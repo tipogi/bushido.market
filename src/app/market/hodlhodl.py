@@ -8,7 +8,7 @@ HOLDHODL_FILTER = "filters[side]={}&filters[include_global]=true&filters[currenc
 
 # Payment Methods
 SEPA = "SEPA"
-ANY_NATIONAL_BANK = "Any national bank"
+
 NATIONAL_BANK = "National Bank"
 
 class HodlHodl:
@@ -55,11 +55,6 @@ class HodlHodl:
             offers['method'] = Payment.loopOrderPaymentsMethods(hodlhodl_offer['payment_methods'][0]['name'])
           else:
             offers['method'] = Payment.loopOrderPaymentsMethods(hodlhodl_offer['payment_method_instructions'][0]['payment_method_name'])
-
-          if SEPA in offers['method']:
-            offers['method'] = { "icon": [SEPA], "others": [] }
-          elif ANY_NATIONAL_BANK in offers['method']:
-            offers['method'] = { "icon": [], "others": [NATIONAL_BANK] }
 
           # Add the offer in the offers array  
           all_offers.append(offers)
