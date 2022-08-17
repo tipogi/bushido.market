@@ -7,6 +7,7 @@ from market.helpers.exchange import Exchange
 from market.bisq import Bisq
 from market.hodlhodl import HodlHodl
 from market.robosats import RoboSats
+from market.helpers.payment import Payment
 
 # Start the application
 app = FastAPI()
@@ -56,3 +57,8 @@ def market():
         "bisq": "http://bisqmktse2cabavbr2xjq7xw3h6g5ottemo5rolfcwt6aly6tp5fdryd.onion/api/offers?market=btc_EUR&direction=BUY",
         "hodlhodl": "https://hodlhodl.com/api/v1/offers?filters[side]=buy&filters[include_global]=true&filters[currency_code]=EUR&filters[only_working_now]=true&sort[by]=price"
     }
+
+@app.get("/test")
+def me():
+    orders = Payment.model_orders_payments_types()
+    return orders

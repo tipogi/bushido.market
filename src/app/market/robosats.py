@@ -1,5 +1,6 @@
 from proxy.tor import Tor
 from market.helpers.filters import SELL, BUY, Filter, ONLINE, RECENTLY_ONLINE, OFFLINE
+from market.helpers.payment import Payment
 
 # Check in the robosats github the url
 ROBOSATS_ONION = "http://robosats6tkf3eva7x2voqso3a5wcorsnw34jveyxfqi2fu7oyheasid.onion"
@@ -143,7 +144,7 @@ class RoboSats:
 
         offer['min_btc'] = offer['min_amount'] / offer['price']
         offer['max_btc'] = offer['max_amount'] / offer['price']
-        offer['method'] = robosats_offer['payment_method']
+        offer['method'] = Payment.loopOrderPaymentsMethods(robosats_offer['payment_method'])
 
         # Add the offer in the offers array  
         all_offers.append(offer)

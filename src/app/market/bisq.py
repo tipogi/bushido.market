@@ -1,5 +1,6 @@
 from market.helpers.filters import Filter, ONLINE
 from proxy.tor import Tor
+from market.helpers.payment import Payment
 
 BISQ_CLEAR = "https://bisq.markets"
 BISQ_ONION = "http://bisqmktse2cabavbr2xjq7xw3h6g5ottemo5rolfcwt6aly6tp5fdryd.onion"
@@ -44,7 +45,7 @@ class Bisq:
           offer['max_btc'] = float(bisq_offer['amount'])
           offer['min_amount'] = int(offer['min_btc'] * offer['price'])
           offer['max_amount'] = int(float(bisq_offer['volume']))
-          offer['method'] = bisq_offer['payment_method']
+          offer['method'] = Payment.loopOrderPaymentsMethods(bisq_offer['payment_method'])
 
           # Add the offer in the offers array  
           all_offers.append(offer)
