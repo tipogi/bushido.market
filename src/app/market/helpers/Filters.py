@@ -4,7 +4,7 @@ SELL = "sell"
 
 # Offer actual state
 ONLINE = "online"
-RECENTLY_ONLINE = "recently_online"
+RECENTLY_ONLINE = "recently online"
 OFFLINE = "offline"
 
 class Filter:

@@ -38,7 +38,7 @@ class Bisq:
           offer = {}
           offer['exchange'] = 'Bisq'
           offer['price'] = offers_price
-          offer['dif'] = offer_premium
+          offer['dif'] = "%{:.2f}".format(offer_premium)
           offer['maker_status'] = ONLINE
           offer['min_btc'] = float(bisq_offer['min_amount'])
           offer['max_btc'] = float(bisq_offer['amount'])

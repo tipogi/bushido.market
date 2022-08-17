@@ -1,6 +1,7 @@
 TODOs (✔/☐)
 ☐ Add ENTRYPOINT and HEALTHYCHECK to fastapi container
 ☐ Create a `crontab` to renew circuit each day. We might need to open TOR control port for that
+☐ Error control when the request (exchange.py) fails
 
 ☐ When we delete __pycache__ after we cannot run again. Enter in the container after restart docker and run `uvicorn app.main:app --host 0.0.0.0 --port 80`. Get the cause of that
 Might be because the path error. If we delete the __pycache__ and after we have an error, it might be the reason

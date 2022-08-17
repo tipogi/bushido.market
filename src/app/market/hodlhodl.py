@@ -36,7 +36,7 @@ class HodlHodl:
         offers['exchange'] = "HodlHodl"
 
         offers['price'] = offers_price
-        offers['dif'] = offer_premium
+        offers['dif'] = "%{:.2f}".format(offer_premium)
         offers['currency'] = hodlhodl_offer['currency_code']
 
         # Get the offer online status

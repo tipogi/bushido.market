@@ -27,18 +27,22 @@ def market_offers(params: MarketOptions):
     premium = params.premium
 
     exch_price = Exchange.get_fiat_price(fiat)
-    bisq_offers = Bisq.market_offers(fiat, direction, premium, exch_price)
-    hodlhodl_offers = HodlHodl.market_offers(fiat, direction, premium, exch_price)
-    robosats_offers = RoboSats.market_offers(fiat, direction, premium)
-    # Join all the offers
-    allOffers = bisq_offers + hodlhodl_offers + robosats_offers
-    # and order by price depending the direction
-    if (direction == BUY):
-        allOffers.sort(key=lambda item: item.get('price'))
-    else:
-        allOffers.sort(key=lambda item: item.get('price'), reverse=True)
+    # If we get the right price value, get the offers
+    if exch_price is not None:
+        bisq_offers = Bisq.market_offers(fiat, direction, premium, exch_price)
+        hodlhodl_offers = HodlHodl.market_offers(fiat, direction, premium, exch_price)
+        robosats_offers = RoboSats.market_offers(fiat, direction, premium)
+        # Join all the offers
+        allOffers = bisq_offers + hodlhodl_offers + robosats_offers
+        # and order by price depending the direction
+        if (direction == BUY):
+            allOffers.sort(key=lambda item: item.get('price'))
+        else:
+            allOffers.sort(key=lambda item: item.get('price'), reverse=True)
 
-    return { "offers": allOffers, "price": exch_price }
+        return { "offers": allOffers, "price": exch_price }
+    else:
+        return { "offers": [], "price": 0}
 
 # Ping temporal healthchecks from docker to see if the container is up
 @app.get("/healthcheck")

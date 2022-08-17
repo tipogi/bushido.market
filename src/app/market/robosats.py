@@ -129,7 +129,7 @@ class RoboSats:
         offer['exchange'] = 'Robosats'
 
         offer['price'] = int(float(robosats_offer['price']))
-        offer['dif'] = offer_premium
+        offer['dif'] = "%{:.2f}".format(offer_premium)
 
         # Get the offer online status
         offer['maker_status'] = RoboSats.get_maker_status(robosats_offer['maker_status'])
