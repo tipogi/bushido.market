@@ -3,6 +3,8 @@ PAYPAL_FRIEND_AND_FAMILY = 'Paypal Friends & Family'
 LN_NETWORK = 'Bitcoin Lightning Network'
 LN_ICON = 'LN'
 AMAZON = 'Amazon'
+GOOGLE_PLAY = 'Google play Gift card'
+APPLE_PAY = 'Apple Pay'
 # When we find the above keyword, we will return that icon to the client
 AMAZON_GIFT_CARD = 'AmazonGiftCard'
 BINANCE_COIN = 'Binance Coin (BNB)'
@@ -11,7 +13,6 @@ IN_PERSON = 'In person'
 # Return payment type as it is
 MONERO = 'Monero'
 CASH_APP = 'CashApp'
-HALCASH = 'HalCash'
 N26 = 'N26'
 REBELLION = 'Rebellion'
 LITECOIN = 'Litecoin'
@@ -22,6 +23,8 @@ CASH_BY_MAIL = 'CASH_BY_MAIL'
 PAYPAL = 'Paypal'
 PAYPAL_UP = 'PayPal'
 AMAZON_GIFT_CARD_IN_ONE = 'AMAZON_GIFT_CARD'
+VENMO = 'Venmo'
+LIQUID = 'Liquid'
 # What is that? https://www.clearxchange.com/ -> Zelle icon
 CLEAR_X_CHANGE = 'CLEAR_X_CHANGE'
 # Return payment type after some processing
@@ -39,6 +42,8 @@ BIZUM = 'BIZUM'
 BIZUM_LOWERCASE = 'Bizum'
 TETHER = 'Tether'
 USDT = 'USDT'
+HALCASH = 'HalCash'
+HALCASH_SLASH = 'Hal-cash'
 # Keywords that we will ignore
 IGNORE = 'Ignore'
 INSTANT = 'Instant'
@@ -90,13 +95,12 @@ class Payment:
           icon.append(newKeyword)
     else:
       icon.append(exceptionIcon)
-    return { "icon": icon, "others": others }
+    return { "icons": icon, "others": others }
 
   def __createNewMethodKeyword(paymentType):
     if (
         paymentType == MONERO or 
-        paymentType == CASH_APP or 
-        paymentType == HALCASH or 
+        paymentType == CASH_APP or
         paymentType == REBELLION or 
         paymentType == N26 or 
         paymentType == LITECOIN or
@@ -104,8 +108,9 @@ class Payment:
         paymentType == SKRILL or 
         paymentType == F2F or 
         paymentType == CASH_BY_MAIL or 
-        paymentType == AMAZON_GIFT_CARD_IN_ONE or 
-        paymentType == CLEAR_X_CHANGE
+        paymentType == CLEAR_X_CHANGE or 
+        paymentType == VENMO or 
+        paymentType == LIQUID
     ):
       return paymentType
     elif paymentType == STRIKE or paymentType == STRIKE_LOWERCASE:
@@ -117,11 +122,15 @@ class Payment:
     elif paymentType == REVOLUT or paymentType == REVOLUT_LOWERCASE:
       return REVOLUT_LOWERCASE
     elif paymentType == BIZUM or paymentType == BIZUM_LOWERCASE:
-      return BIZUM
+      return BIZUM_LOWERCASE
     elif paymentType == PAYPAL or paymentType == PAYPAL_UP:
       return PAYPAL
+    elif paymentType == HALCASH or paymentType == HALCASH_SLASH:
+      return HALCASH
     elif paymentType == TETHER or paymentType == USDT:
       return TETHER
+    elif paymentType == AMAZON_GIFT_CARD_IN_ONE:
+      return AMAZON_GIFT_CARD
     elif paymentType == INSTANT:
       return IGNORE
     else:
@@ -141,5 +150,9 @@ class Payment:
       return F2F
     elif paymentMethods == ANY_NATIONAL_BANK:
       return ANY_NATIONAL_BANK
+    elif paymentMethods == GOOGLE_PLAY:
+      return GOOGLE_PLAY
+    elif paymentMethods == APPLE_PAY:
+      return APPLE_PAY
     else:
       return None
