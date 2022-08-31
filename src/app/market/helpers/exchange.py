@@ -3,7 +3,7 @@ from proxy.tor import Tor
 EXCHANGE_URL = 'http://wizpriceje6q5tdrxkyiazsgu7irquiqjy2dptezqhrtu7l2qelqktid.onion/getAllMarketPrices'
 
 class Exchange:
-  # Get the actual market price of btc depending of the requested currency
+  # Get the actual market price of btc depending of the requested currency.
   def get_fiat_price(fiat: str):
     try:
       fiat_prices = Tor.proxy_request(EXCHANGE_URL, 'EXCHANGE')
