@@ -25,6 +25,9 @@ PAYPAL_UP = 'PayPal'
 AMAZON_GIFT_CARD_IN_ONE = 'AMAZON_GIFT_CARD'
 VENMO = 'Venmo'
 LIQUID = 'Liquid'
+LONG_E_TRANS = 'INTERAC_E_TRANSFER'
+BROKEN_E_TRANS = 'Interac e-transfer'
+E_TRANSFER = 'e-trans'
 # What is that? https://www.clearxchange.com/ -> Zelle icon
 CLEAR_X_CHANGE = 'CLEAR_X_CHANGE'
 # Return payment type after some processing
@@ -40,6 +43,8 @@ REVOLUT = 'REVOLUT'
 REVOLUT_LOWERCASE = 'Revolut'
 BIZUM = 'BIZUM'
 BIZUM_LOWERCASE = 'Bizum'
+AU_PAYID = 'AUSTRALIA_PAYID'
+AU_PAYID_SHORT = 'PayID'
 TETHER = 'Tether'
 USDT = 'USDT'
 HALCASH = 'HalCash'
@@ -110,7 +115,8 @@ class Payment:
         paymentType == CASH_BY_MAIL or 
         paymentType == CLEAR_X_CHANGE or 
         paymentType == VENMO or 
-        paymentType == LIQUID
+        paymentType == LIQUID or 
+        paymentType == AU_PAYID
     ):
       return paymentType
     elif paymentType == STRIKE or paymentType == STRIKE_LOWERCASE:
@@ -131,6 +137,10 @@ class Payment:
       return TETHER
     elif paymentType == AMAZON_GIFT_CARD_IN_ONE:
       return AMAZON_GIFT_CARD
+    elif paymentType == LONG_E_TRANS:
+      return E_TRANSFER
+    elif paymentType == AU_PAYID_SHORT:
+      return AU_PAYID
     elif paymentType == INSTANT:
       return IGNORE
     else:
@@ -154,5 +164,7 @@ class Payment:
       return GOOGLE_PLAY
     elif paymentMethods == APPLE_PAY:
       return APPLE_PAY
+    elif paymentMethods == BROKEN_E_TRANS:
+      return E_TRANSFER
     else:
       return None

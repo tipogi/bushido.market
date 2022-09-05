@@ -119,36 +119,36 @@ class RoboSats:
 
     # We will populate all offers filtering the fields that we want
     all_offers = []
-    
-    for robosats_offer in robosats_offers:
-      # Get some fields before add an offer
-      offer_premium = float(robosats_offer['premium'])
-      offer_type = Filter.get_offer_types(direction)
 
-      if (Filter.offer_premium_accepted(offer_type, offer_premium, premium)):
-        offer = {}
-        offer['exchange'] = 'Robosats'
+    if ('not_found' not in robosats_offers):
+      for robosats_offer in robosats_offers:
+        # Get some fields before add an offer
+        offer_premium = float(robosats_offer['premium'])
+        offer_type = Filter.get_offer_types(direction)
 
-        offer['price'] = int(float(robosats_offer['price']))
-        offer['dif'] = "%{:.2f}".format(offer_premium)
+        if (Filter.offer_premium_accepted(offer_type, offer_premium, premium)):
+          offer = {}
+          offer['exchange'] = 'Robosats'
 
-        # Get the offer online status
-        offer['maker_status'] = RoboSats.get_maker_status(robosats_offer['maker_status'])
+          offer['price'] = int(float(robosats_offer['price']))
+          offer['dif'] = "%{:.2f}".format(offer_premium)
 
-        if (robosats_offer['amount'] is not None):
-          offer['min_amount'] = int(float(robosats_offer['amount']))
-          offer['max_amount'] = int(float(robosats_offer['amount']))
-        else:
-          offer['min_amount'] = int(float(robosats_offer['min_amount']))
-          offer['max_amount'] = int(float(robosats_offer['max_amount']))
+          # Get the offer online status
+          offer['maker_status'] = RoboSats.get_maker_status(robosats_offer['maker_status'])
 
-        offer['min_btc'] = offer['min_amount'] / offer['price']
-        offer['max_btc'] = offer['max_amount'] / offer['price']
-        offer['method'] = Payment.loopOrderPaymentsMethods(robosats_offer['payment_method'])
+          if (robosats_offer['amount'] is not None):
+            offer['min_amount'] = int(float(robosats_offer['amount']))
+            offer['max_amount'] = int(float(robosats_offer['amount']))
+          else:
+            offer['min_amount'] = int(float(robosats_offer['min_amount']))
+            offer['max_amount'] = int(float(robosats_offer['max_amount']))
 
-        # Add the offer in the offers array  
-        all_offers.append(offer)
+          offer['min_btc'] = offer['min_amount'] / offer['price']
+          offer['max_btc'] = offer['max_amount'] / offer['price']
+          offer['method'] = Payment.loopOrderPaymentsMethods(robosats_offer['payment_method'])
 
+          # Add the offer in the offers array  
+          all_offers.append(offer)
     return all_offers
 
   
