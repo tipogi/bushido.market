@@ -60,6 +60,6 @@ class HodlHodl:
           all_offers.append(offers)
     else:
       print("It was an error while we were fetching the orders")
-      print (hodlhodl_offer)
+      print (hodlhodl_offers)
 
     return all_offers

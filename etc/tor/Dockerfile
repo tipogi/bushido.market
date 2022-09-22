@@ -9,7 +9,7 @@ FROM alpine:$ALPINE_VER AS tor-builder
 
 ## TOR_VER can be overwritten with --build-arg at build time
 ## Get latest version from > https://dist.torproject.org/
-ARG TOR_VER=0.4.6.7
+ARG TOR_VER=0.4.7.10
 ARG TORGZ=https://dist.torproject.org/tor-$TOR_VER.tar.gz
 ARG TOR_KEY=0x6AFEE6D49E92B601
 
@@ -22,19 +22,36 @@ RUN apk --no-cache add --update \
     openssl openssl-dev
 
 ## Get Tor key file and tar source file
-RUN wget $TORGZ.asc &&\
+RUN wget $TORGZ.sha256sum.asc &&\
+    wget $TORGZ.sha256sum &&\
     wget $TORGZ
 
+## OLD: Get signature from key server
+#RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys ${TOR_KEY}
+
+## Fetch developers keys
+RUN gpg --auto-key-locate nodefault,wkd --locate-keys ahf@torproject.org 2>&1 |\
+    grep -q 'key BEA7B180B1491921: public key "Alexander Færøy <ahf@torproject.org>" imported' ||\
+    { echo "Couldn't download the public key!"; exit 1; }
+RUN gpg --auto-key-locate nodefault,wkd --locate-keys dgoulet@torproject.org 2>&1 |\
+    grep -q 'key 42E86A2A11F48D36: public key "David Goulet <dgoulet@torproject.org>" imported' ||\
+    { echo "Couldn't download the public key!"; exit 1; }
+RUN gpg --auto-key-locate nodefault,wkd --locate-keys nickm@torproject.org 2>&1 |\
+    grep -q 'key FE43009C4607B1FB: public key "Nick Mathewson <nickm@torproject.org>" imported' ||\
+    { echo "Couldn't download the public key!"; exit 1; }
+
+# Export in a file Nick key to after verify
+RUN gpg --output ./tor.keyring --export 0x2133BC600AB133E1D826D173FE43009C4607B1FB
 ## Verify Tor source tarballs asc signatures
-## Get signature from key server
-RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys ${TOR_KEY}
 ## Verify that the checksums file is PGP signed by the release signing key
-RUN gpg --verify tor-${TOR_VER}.tar.gz.asc tor-${TOR_VER}.tar.gz 2>&1 |\
-    grep -q "gpg: Good signature" ||\
+## The .asc file will verify that the .sha256sum file (containing the checksum of the package) has not been tampered with
+RUN gpgv --keyring ./tor.keyring ./tor-${TOR_VER}.tar.gz.sha256sum.asc ./tor-${TOR_VER}.tar.gz.sha256sum 2>&1 |\
+    grep -q 'gpgv: Good signature from "Nick Mathewson <nickm@torproject.org>"' ||\
     { echo "Couldn't verify signature!"; exit 1; }
-RUN gpg --verify tor-${TOR_VER}.tar.gz.asc tor-${TOR_VER}.tar.gz 2>&1 |\
-    grep -q "Primary key fingerprint: 2133 BC60 0AB1 33E1 D826  D173 FE43 009C 4607 B1FB" ||\
-    { echo "Couldn't verify Primary key fingerprint!"; exit 1; }
+## Validated the signatures of the checksum, verify the integrity of the package
+RUN sha256sum -c tor-${TOR_VER}.tar.gz.sha256sum 2>&1 |\
+    grep -q "OK" ||\
+    { echo "Not valid checksum!"; exit 1; }
 
 ## Make install Tor
 RUN tar xfz tor-$TOR_VER.tar.gz &&\

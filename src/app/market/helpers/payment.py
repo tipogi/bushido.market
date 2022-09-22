@@ -95,7 +95,7 @@ class Payment:
         if (newKeyword is None):
           others.append(paymentType)
         elif (newKeyword == IGNORE):
-          print('Ignore')
+          print('The offer does not have icon so, ignore')
         else:
           icon.append(newKeyword)
     else:
