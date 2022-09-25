@@ -137,5 +137,7 @@ LABEL url="https://www.torproject.org"
 
 VOLUME [ "${DATA_DIR}" ]
 WORKDIR ${DATA_DIR}
+# located in /src/scripts/entrypoint.sh
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint.sh"]
+# The specified command will run after the executable specified in entrypoint
 CMD ["tor", "-f", "/tor/torrc"]

@@ -34,3 +34,13 @@ Below is a list of available environmental flags that can be set during containe
 | TOR_SERVICE_HOSTS | hostname=wan-port:redict-ip:rediect-port | Tor hidden service configuration |
 | TOR_SERVICE_HOSTS_CLIENTS | hostname:client-1,client-2,... | Authorised clients for hostname |
 | TOR_RELAY | true/__false__ | ** NOT IMPLEMENTED YET ** |
+
+## Resources
+- [Docker Tor docs](https://barneybuffet.github.io/docker-tor/)
+- [Running Tor proxy with docker](https://dev.to/nabarun/running-tor-proxy-with-docker-56n9)
+- [How to use Python with Tor and Privoxy](https://gist.github.com/DusanMadar/8d11026b7ce0bce6a67f7dd87b999f6b)
+- [torpool](https://github.com/u1234x1234/torpool)
+- [Asynchronous http request in python with aiohttp](https://www.twilio.com/blog/asynchronous-http-requests-in-python-with-aiohttp)
+- [Speeding Up Python with Concurrency, Parallelism, and asyncio](https://testdriven.io/blog/concurrency-parallelism-asyncio/)
+- [Configure Tor as a listening proxy server that I can connect to remotely?](https://superuser.com/questions/458491/configure-tor-as-a-listening-proxy-server-that-i-can-connect-to-remotely)
+- [Cannot get tor proxy to work](https://forum.openwrt.org/t/cant-get-tor-socks-proxy-to-work/64142)
