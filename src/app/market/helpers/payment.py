@@ -166,5 +166,6 @@ class Payment:
       return APPLE_PAY
     elif paymentMethods == BROKEN_E_TRANS:
       return E_TRANSFER
+      
     else:
       return None
