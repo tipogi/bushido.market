@@ -7,6 +7,7 @@ from market.helpers.exchange import Exchange
 from market.bisq import Bisq
 from market.hodlhodl import HodlHodl
 from market.robosats import RoboSats
+from market.lnp2pbot import Lnp2pBot
 from market.helpers.payment import Payment
 
 # Start the application
@@ -58,7 +59,6 @@ def market():
         "hodlhodl": "https://hodlhodl.com/api/v1/offers?filters[side]=buy&filters[include_global]=true&filters[currency_code]=EUR&filters[only_working_now]=true&sort[by]=price"
     }
 
-@app.get("/test")
-def me():
-    orders = Payment.model_orders_payments_types()
-    return 'test'
+@app.get("/sandbox")
+def sandbox():
+    Lnp2pBot.market_offers('usd', 'buy', 10, 19983)
