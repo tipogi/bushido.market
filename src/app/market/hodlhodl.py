@@ -57,7 +57,7 @@ class HodlHodl:
             offers['method'] = Payment.loopOrderPaymentsMethods(hodlhodl_offer['payment_method_instructions'][0]['payment_method_name'])
 
          # Should be optional, not mandatory property. TODO 
-          offer['extra'] = ''
+          offers['extra'] = ''
           # Add the offer in the offers array  
           all_offers.append(offers)
     else:

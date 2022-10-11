@@ -2,6 +2,7 @@ from proxy.tor import Tor
 
 from market.helpers.payment import Payment
 from market.helpers.filters import ONLINE
+from market.helpers.filters import Filter
 
 LNP2PBOT_API='https://api.lnp2pbot.com/orders'
 
@@ -9,8 +10,7 @@ class Lnp2pBot:
     def market_offers(currency: str, direction: str, premium: float, exch_price: float):
         lnp2p_request = Tor.proxy_request(LNP2PBOT_API, 'LNP2PBOT')
         fiat = currency.upper()
-        offer_type = direction.lower()
-        print('fiat:', fiat, 'direction:', offer_type)
+        offer_type = Filter.get_offer_types(direction).lower()
         all_offers = []
         if (len(lnp2p_request) > 0):
             for offer in lnp2p_request:
@@ -31,7 +31,7 @@ class Lnp2pBot:
                     # Calculate min and max in btc
                     p2p_offer['min_btc'] = p2p_offer['min_amount'] / p2p_offer['price']
                     p2p_offer['max_btc'] = p2p_offer['max_amount'] / p2p_offer['price']
-                    p2p_offer['extra'] = offer['_id']
+                    p2p_offer['extra'] = offer['tg_channel_message1']
                     all_offers.append(p2p_offer)
             return all_offers
         else:

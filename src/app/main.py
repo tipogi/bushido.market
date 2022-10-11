@@ -35,13 +35,13 @@ def market_offers(params: MarketOptions):
     exch_price = Exchange.get_fiat_price(fiat)
     # If we get the right price value, get the offers
     if exch_price is not None:
-        #bisq_offers = Bisq.market_offers(fiat, direction, premium, exch_price)
-        #hodlhodl_offers = HodlHodl.market_offers(fiat, direction, premium, exch_price)
-        #robosats_offers = RoboSats.market_offers(fiat, direction, premium)
+        bisq_offers = Bisq.market_offers(fiat, direction, premium, exch_price)
+        hodlhodl_offers = HodlHodl.market_offers(fiat, direction, premium, exch_price)
+        robosats_offers = RoboSats.market_offers(fiat, direction, premium)
         lnp2p_offers = Lnp2pBot.market_offers(fiat, direction, premium, exch_price)
         # Join all the offers
-        #allOffers = bisq_offers + hodlhodl_offers + robosats_offers + lnp2p_offers
-        allOffers = lnp2p_offers
+        allOffers = bisq_offers + hodlhodl_offers + robosats_offers + lnp2p_offers
+        #allOffers = lnp2p_offers
         # and order by price depending the direction
         if (direction == BUY):
             allOffers.sort(key=lambda item: item.get('price'))

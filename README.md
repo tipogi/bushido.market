@@ -2,7 +2,7 @@
 **BIG THANKS** to *Barney Buffet* and *j4imefoo* for their awesome repositories that helps to create that. The creation of that, is a fusion of two repositories.
 Instead of making requests from the CLI, we have an API server to make queries against that. After, all the queries are proxied through the tor service.
 - [Docker Tor](https://github.com/BarneyBuffet/docker-tor): A docker image that runs a Tor service on an Alpine linux base image
-- [nokyc](https://github.com/j4imefoo/nokyc): A script that lists all current Bisq, HodlHodl, and Robosats offers in the terminal
+- [nokyc](https://github.com/j4imefoo/nokyc): A script that lists all current Bisq, HodlHodl, Robosats and LNP2PBot offers in the terminal
 ## Containers Network
 Create a docker network to set the communication between the containers. Even docker creates a default network in each docker-compose execution, in `torrc` file, we cannot use docker container name becase it breaks the naming pattern, it has to be an IP.
 Allow to the **app container** to make request against the tor **proxy container** editing the default value of `TOR_PROXY_ACCEPT`. Docker proxy container does not expose its SOCKS port to outside, it is just accessible from inside of the docker network.
