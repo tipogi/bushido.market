@@ -46,7 +46,8 @@ class Bisq:
           offer['min_amount'] = int(offer['min_btc'] * offer['price'])
           offer['max_amount'] = int(float(bisq_offer['volume']))
           offer['method'] = Payment.loopOrderPaymentsMethods(bisq_offer['payment_method'])
-
+         # Should be optional, not mandatory property. TODO 
+          offer['extra'] = ''
           # Add the offer in the offers array  
           all_offers.append(offer)
       return all_offers

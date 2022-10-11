@@ -147,6 +147,8 @@ class RoboSats:
           offer['max_btc'] = offer['max_amount'] / offer['price']
           offer['method'] = Payment.loopOrderPaymentsMethods(robosats_offer['payment_method'])
 
+         # Should be optional, not mandatory property. TODO 
+          offer['extra'] = ''
           # Add the offer in the offers array  
           all_offers.append(offer)
     return all_offers

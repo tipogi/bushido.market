@@ -17,22 +17,23 @@ class Lnp2pBot:
                 if (offer['type'] == offer_type and offer['fiat_code'] == fiat):
                     p2p_offer = {}
                     offer_limits = Lnp2pBot.min_max_amount(offer)
+                    # Add to exchange name the reference of the offer
                     p2p_offer['exchange'] = 'LnP2PBot'
-                    p2p_offer['_id'] = offer['_id']
                     p2p_offer['min_amount'] = int(offer_limits['min'])
                     p2p_offer['max_amount'] = int(offer_limits['max'])
                     p2p_offer['method'] = Payment.loopOrderPaymentsMethods(offer['payment_method'])
+                    # Calculate the price over premium
                     premium = offer['price_margin']
                     p2p_offer['price'] = Lnp2pBot.calculatePrice(exch_price, premium)
-                    # Get the offer online status
+                    # Set online status to the offer
                     p2p_offer['maker_status'] = ONLINE
                     p2p_offer['dif'] = "%{:.2f}".format(premium)
-
-                    #_id
-                    #status
-                    #price_margin
-
-                    print(p2p_offer)
+                    # Calculate min and max in btc
+                    p2p_offer['min_btc'] = p2p_offer['min_amount'] / p2p_offer['price']
+                    p2p_offer['max_btc'] = p2p_offer['max_amount'] / p2p_offer['price']
+                    p2p_offer['extra'] = offer['_id']
+                    all_offers.append(p2p_offer)
+            return all_offers
         else:
             return all_offers
 
@@ -53,3 +54,5 @@ class Lnp2pBot:
         calc = (market_price / 100) * premium
         return market_price + calc
 
+#MISSING: exchange, min_amount, max_amount, price, dif, maker_status
+#DONE: currency, min_btc, max_btc, nethod 
