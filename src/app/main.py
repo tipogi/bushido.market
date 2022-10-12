@@ -12,6 +12,9 @@ from market.hodlhodl import HodlHodl
 from market.robosats import RoboSats
 from market.lnp2pbot import Lnp2pBot
 
+# Domain class
+from proxy.domain import Domain
+
 # Start the application
 app = FastAPI()
 
@@ -21,6 +24,15 @@ class MarketOptions(BaseModel):
     fiat: Optional[str] = 'eur'
     premium: Optional[float] = 8
 
+class PingOptions(BaseModel):
+    domain: Optional[str]
+
+
+'''
+Get the market offers from a POST request
+MARKETS: Bisq, HodlHodl, Robosats and LNP2PBot
+All request goes through TOR network
+'''
 @app.post("/market_offers")
 def market_offers(params: MarketOptions):
     # The offers currency
@@ -29,8 +41,6 @@ def market_offers(params: MarketOptions):
     # and viceversa. We will query to API to get offers types, not the user action
     direction = params.direction
     premium = params.premium
-
-    print(fiat, direction, premium)
 
     exch_price = Exchange.get_fiat_price(fiat)
     # If we get the right price value, get the offers
@@ -52,19 +62,14 @@ def market_offers(params: MarketOptions):
     else:
         return { "offers": [], "price": 0}
 
-# Ping temporal healthchecks from docker to see if the container is up
+'''
+Check the domain status. All the ping requests goes through TOR service
+'''
+@app.post("/ping-domain")
+def ping_domain(param: PingOptions):
+    return Domain.check_domain_status(param.domain)
+
+# Ping for temporal healthchecks from docker to see if the container is up
 @app.get("/healthcheck")
 def healthcheck():
     return 'healthy'
-
-@app.get("/urls")
-def market():
-    return {
-        "robosats": "http://robosats6tkf3eva7x2voqso3a5wcorsnw34jveyxfqi2fu7oyheasid.onion/api/book/?currency=2&type=0",
-        "bisq": "http://bisqmktse2cabavbr2xjq7xw3h6g5ottemo5rolfcwt6aly6tp5fdryd.onion/api/offers?market=btc_EUR&direction=BUY",
-        "hodlhodl": "https://hodlhodl.com/api/v1/offers?filters[side]=buy&filters[include_global]=true&filters[currency_code]=EUR&filters[only_working_now]=true&sort[by]=price"
-    }
-
-@app.get("/sandbox")
-def sandbox():
-    Lnp2pBot.market_offers('usd', 'buy', 10, 19983)
