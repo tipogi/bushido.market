@@ -1,13 +1,15 @@
 import requests
 import json
 
-MARKET_TIMEOUT = 20.0
+MARKET_TIMEOUT = 10.0
+BISQ_TIMEOUT = 20.0
 DOMAIN_TIMEOUT = 30.0
 HTTP_SOCKET_URL = 'socks5h://tor:9050'
 HTTPS_SOCKET_URL = 'socks5h://tor:9050'
 
 # If I add in domain.py, it will have circular dependency
 DOMAIN_REQUEST = 'DOMAIN_CHECK'
+TOR_SERVICE_DOWN = 'Failed to establish a new connection: 0x04: Host unreachable'
 
 class Tor:
   # Make a request throw the Tor Proxy
@@ -21,6 +23,9 @@ class Tor:
       }
       # Set the timeout request limit
       timeout_limit = MARKET_TIMEOUT if request_name != DOMAIN_REQUEST else DOMAIN_TIMEOUT
+      # By average the bisq requests take more time that other markets
+      if request_name == 'BISQ':
+        timeout_limit = BISQ_TIMEOUT
       # Make request
       request = session.get(url, timeout=timeout_limit)
       response = request
@@ -38,7 +43,11 @@ class Tor:
       return []
     except IOError as err:
       if (request_name == DOMAIN_REQUEST):
-        return type(err).__name__
+        errorCastToString = str(err)
+        if (errorCastToString.find(TOR_SERVICE_DOWN) != -1):
+          return TOR_SERVICE_DOWN
+        else:
+          return type(err).__name__
       else:
         print("Please, make sure you are running TOR!")  
         #exit(1)

@@ -1,4 +1,9 @@
+from http.client import HTTPException
+from requests import HTTPError
+from proxy.tor import TOR_SERVICE_DOWN
 from proxy.tor import Tor, DOMAIN_REQUEST
+
+STATIC_URL = 'https://dyinodes.com/'
 
 class Domain:
   def check_domain_status(domain):
@@ -14,3 +19,10 @@ class Domain:
         return 408
     else:
         return ''
+  
+  def check_tor_status():
+    pingStatus = Tor.proxy_request(STATIC_URL, DOMAIN_REQUEST)
+    if (pingStatus == TOR_SERVICE_DOWN):
+      print(TOR_SERVICE_DOWN)
+      raise HTTPException(404, "Item not found")
+    return 200

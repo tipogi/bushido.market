@@ -73,3 +73,8 @@ def ping_domain(param: PingOptions):
 @app.get("/healthcheck")
 def healthcheck():
     return 'healthy'
+
+# Ping for temporal healthchecks from docker to see if the container is up
+@app.get("/tor-healthcheck")
+def healthcheck():
+    return Domain.check_tor_status()
