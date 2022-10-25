@@ -3,7 +3,9 @@ from requests import HTTPError
 from proxy.tor import TOR_SERVICE_DOWN
 from proxy.tor import Tor, DOMAIN_REQUEST
 
-STATIC_URL = 'https://dyinodes.com/'
+#Down url
+#STATIC_URL = 'https://dyinodes.com/'
+STATIC_URL = 'https://bitcoiner.guide/'
 
 class Domain:
   def check_domain_status(domain):
@@ -24,5 +26,5 @@ class Domain:
     pingStatus = Tor.proxy_request(STATIC_URL, DOMAIN_REQUEST)
     if (pingStatus == TOR_SERVICE_DOWN):
       print(TOR_SERVICE_DOWN)
-      raise HTTPException(404, "Item not found")
+      raise HTTPException(404, "Tor service down")
     return 200
