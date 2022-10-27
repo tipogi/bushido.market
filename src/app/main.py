@@ -69,12 +69,17 @@ Check the domain status. All the ping requests goes through TOR service
 def ping_domain(param: PingOptions):
     return Domain.check_domain_status(param.domain)
 
-# Ping for temporal healthchecks from docker to see if the container is up
-@app.get("/healthcheck")
-def healthcheck():
-    return 'healthy'
-
-# Ping for temporal healthchecks from docker to see if the container is up
+'''
+Ping for temporal healthchecks from docker to see if the container is up
+'''
 @app.get("/tor-healthcheck")
-def healthcheck():
+def tor_healthcheck():
     return Domain.check_tor_status()
+
+'''
+Ping for temporal healthchecks from docker to see if the container is up
+'''
+@app.get("/docker-healthcheck")
+def docker_healthcheck():
+    print('Health check started...')
+    return 'ok'

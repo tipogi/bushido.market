@@ -2,7 +2,7 @@ import requests
 import json
 
 MARKET_TIMEOUT = 10.0
-BISQ_TIMEOUT = 20.0
+EXTRA_TIMEOUT = 20.0
 DOMAIN_TIMEOUT = 30.0
 HTTP_SOCKET_URL = 'socks5h://tor:9050'
 HTTPS_SOCKET_URL = 'socks5h://tor:9050'
@@ -23,9 +23,9 @@ class Tor:
       }
       # Set the timeout request limit
       timeout_limit = MARKET_TIMEOUT if request_name != DOMAIN_REQUEST else DOMAIN_TIMEOUT
-      # By average the bisq requests take more time that other markets
-      if request_name == 'BISQ':
-        timeout_limit = BISQ_TIMEOUT
+      # By average the bisq and Robosats requests take more time that other markets
+      if request_name == 'BISQ' or request_name == 'ROBOSATS':
+        timeout_limit = EXTRA_TIMEOUT
       # Make request
       request = session.get(url, timeout=timeout_limit)
       response = request

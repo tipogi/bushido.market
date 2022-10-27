@@ -9,5 +9,11 @@ COPY etc/fastapi/requirements.txt /app/requirements.txt
 RUN /usr/local/bin/python -m pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
+ENV PORT=8081
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+## Docker health check
+HEALTHCHECK --interval=300s --timeout=15s --start-period=20s --retries=3 \
+            CMD curl http://nokyc-api:8081/docker-healthcheck
+
+
+CMD ["uvicorn", "app.main:app"]

@@ -35,6 +35,9 @@ Below is a list of available environmental flags that can be set during containe
 | TOR_SERVICE_HOSTS_CLIENTS | hostname:client-1,client-2,... | Authorised clients for hostname |
 | TOR_RELAY | true/__false__ | ** NOT IMPLEMENTED YET ** |
 
+## IMPORTANT
+- When we change the configuration files delete the volume of tor
+
 ## Resources
 - [Docker Tor docs](https://barneybuffet.github.io/docker-tor/)
 - [Running Tor proxy with docker](https://dev.to/nabarun/running-tor-proxy-with-docker-56n9)
