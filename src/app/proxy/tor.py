@@ -4,8 +4,8 @@ import json
 MARKET_TIMEOUT = 10.0
 EXTRA_TIMEOUT = 20.0
 DOMAIN_TIMEOUT = 30.0
-HTTP_SOCKET_URL = 'socks5h://tor:9050'
-HTTPS_SOCKET_URL = 'socks5h://tor:9050'
+HTTP_SOCKET_URL = 'socks5h://tor-proxy:9050'
+HTTPS_SOCKET_URL = 'socks5h://tor-proxy:9050'
 
 # If I add in domain.py, it will have circular dependency
 DOMAIN_REQUEST = 'DOMAIN_CHECK'

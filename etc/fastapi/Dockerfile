@@ -1,6 +1,5 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
 
-# 
 WORKDIR /app
 
 COPY etc/fastapi/requirements.txt /app/requirements.txt

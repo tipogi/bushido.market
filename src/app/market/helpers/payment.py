@@ -13,6 +13,7 @@ IN_PERSON = 'In person'
 # Return payment type as it is
 MONERO = 'Monero'
 CASH_APP = 'CashApp'
+CASH_APP_SEP = 'Cash App'
 N26 = 'N26'
 REBELLION = 'Rebellion'
 LITECOIN = 'Litecoin'
@@ -32,6 +33,7 @@ E_TRANSFER = 'e-trans'
 CLEAR_X_CHANGE = 'CLEAR_X_CHANGE'
 # Return payment type after some processing
 STRIKE = 'STRIKE'
+UPHOLD = 'UPHOLD'
 STRIKE_LOWERCASE = 'Strike'
 TRANSFERWISE = 'TRANSFERWISE'
 TRANSFERWISE_LOWER = 'TransferWise'
@@ -116,7 +118,8 @@ class Payment:
         paymentType == CLEAR_X_CHANGE or 
         paymentType == VENMO or 
         paymentType == LIQUID or 
-        paymentType == AU_PAYID
+        paymentType == AU_PAYID or
+        paymentType == UPHOLD
     ):
       return paymentType
     elif paymentType == STRIKE or paymentType == STRIKE_LOWERCASE:
@@ -166,6 +169,7 @@ class Payment:
       return APPLE_PAY
     elif paymentMethods == BROKEN_E_TRANS:
       return E_TRANSFER
-      
+    elif paymentMethods == CASH_APP_SEP:
+      return CASH_APP
     else:
       return None

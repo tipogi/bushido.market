@@ -81,5 +81,4 @@ Ping for temporal healthchecks from docker to see if the container is up
 '''
 @app.get("/docker-healthcheck")
 def docker_healthcheck():
-    print('Health check started...')
     return 'ok'
