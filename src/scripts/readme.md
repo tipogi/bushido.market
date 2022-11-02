@@ -15,3 +15,6 @@ crontab -e
 # Check our crontab if it was add 
 crontab -l
 ```
+
+### Notifications
+Notifications will be located in /var/spool/mail in `bushido` file
