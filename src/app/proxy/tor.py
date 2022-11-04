@@ -9,7 +9,9 @@ HTTPS_SOCKET_URL = 'socks5h://tor-proxy:9050'
 
 # If I add in domain.py, it will have circular dependency
 DOMAIN_REQUEST = 'DOMAIN_CHECK'
-TOR_SERVICE_DOWN = 'Failed to establish a new connection: 0x04: Host unreachable'
+DOMAIN_UNREACHEABLE_ERROR = 'Failed to establish a new connection: 0x04: Host unreachable'
+HOST_UNREACHEABLE_MESSAGE = 'Host unreacheable'
+TOR_SERVICE_DOWN = 'Name or service not known'
 
 class Tor:
   # Make a request throw the Tor Proxy
@@ -42,11 +44,16 @@ class Tor:
       print(f"The request of {request_name} take too long, try again")
       return []
     except IOError as err:
+      # Use that to not mix with market requests
       if (request_name == DOMAIN_REQUEST):
         errorCastToString = str(err)
-        if (errorCastToString.find(TOR_SERVICE_DOWN) != -1):
-          return TOR_SERVICE_DOWN
+        print(errorCastToString)
+        # We found that message in the error
+        if (errorCastToString.find(DOMAIN_UNREACHEABLE_ERROR) != -1):
+          print("We could not access to the DOMAIN. It seems it is DOWN")
+          return HOST_UNREACHEABLE_MESSAGE
         else:
+          print("TOR service is DOWN. We could not proxy the request through TOR network")
           return type(err).__name__
       else:
         print("Please, make sure you are running TOR!")  

@@ -1,6 +1,6 @@
 from http.client import HTTPException
 from requests import HTTPError
-from proxy.tor import TOR_SERVICE_DOWN
+from proxy.tor import TOR_SERVICE_DOWN, HOST_UNREACHEABLE_MESSAGE
 from proxy.tor import Tor, DOMAIN_REQUEST
 
 #Down url
@@ -14,6 +14,8 @@ class Domain:
       return pingStatus.status_code
     # Object is array
     elif (type(pingStatus).__name__ == 'str'):
+        if pingStatus == HOST_UNREACHEABLE_MESSAGE:
+          return HOST_UNREACHEABLE_MESSAGE
         return pingStatus
     # If there is some error with tor proxy will return an empty array, []
     elif (type(pingStatus).__name__ == 'list'):
@@ -25,6 +27,5 @@ class Domain:
   def check_tor_status():
     pingStatus = Tor.proxy_request(STATIC_URL, DOMAIN_REQUEST)
     if (pingStatus == TOR_SERVICE_DOWN):
-      print(TOR_SERVICE_DOWN)
       raise HTTPException(404, "Tor service down")
     return 200
