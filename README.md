@@ -8,7 +8,7 @@ Instead of making requests from the CLI, we have an API server to make queries a
 
 ![Market Architecture](./docs/assets/arch.png)
 
-Clients interacts with the system through the API-Gateway. The market module executes the corresponding use-case and proxies the request through the proxy server. Usually, all the requests that travel through the tor network are going to different P2P exchanges (API) as Hodl Hold, Bisq, P2PLNBot and RoboSats to get the market offers.
+Clients interacts with the system through the API-Gateway. The market module executes the corresponding use-case and proxies the request through the proxy server. Usually, all the requests that travel through the tor network are going to different P2P exchanges (API) as Hodl Hold, Bisq, LNp2pbot and RoboSats to get the market offers.
 That two modules, work in top of a docker containers which gives the flexibility to be more portable and be able to install in a place that we want.
 
 ## Containers Network
