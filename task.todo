@@ -7,3 +7,4 @@ TODOs (✔/☐)
 Might be because the path error. If we delete the __pycache__ and after we have an error, it might be the reason
 nokyc-api     | Checking for script in /app/prestart.sh
 nokyc-api     | There is no script /app/prestart.sh
+☐ Add not limit in premium
